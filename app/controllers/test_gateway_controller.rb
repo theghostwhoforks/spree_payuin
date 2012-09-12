@@ -1,7 +1,7 @@
 class TestGatewayController < Spree::BaseController
 
   def payment
-    redirect_to params[:redirect_url], params => params
+    redirect_to gateway_payuin_callback_path(params)
   end
 
 end
