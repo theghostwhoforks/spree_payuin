@@ -5,6 +5,7 @@ class Spree::Payuin::PaymentMethod < Spree::PaymentMethod
   preference :merchant_id, :string
 	preference :salt,        :string
   
+  attr_accessible :preferred_account_id, :preferred_url, :preferred_mode, :preferred_merchant_id, :preferred_salt
 
   def payment_profiles_supported?
     true
@@ -23,7 +24,7 @@ class Spree::Payuin::PaymentMethod < Spree::PaymentMethod
       %w(capture)
   end
   
-  def capture(authorization, credit_card, gateway_options)
+  def capture(payment)
     ActiveMerchant::Billing::Response.new(true, 'Bogus Gateway: Forced success', {}, :test => true, :authorization => '67890')
   end
 end

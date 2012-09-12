@@ -1,0 +1,15 @@
+<%= hidden_field_tag 'key', @order.payment_method.preferred_merchant_id %>
+<%= hidden_field_tag 'txnid', "#{@order.id}" %>
+<%= hidden_field_tag 'amount', @order.total.to_f %>
+<%= hidden_field_tag 'productinfo', @order.number %>
+<%= hidden_field_tag 'firstname', @order.bill_address.firstname %>
+<%= hidden_field_tag 'email', @order.user.email %>
+<%= hidden_field_tag 'phone', @order.bill_address.phone %>
+<%= hidden_field_tag 'surl', 'http://google.com' %>
+<%= hidden_field_tag 'Furl', 'http://bing.com' %>
+<%= hidden_field_tag 'Hash', Digest::SHA512.hexdigest("C0Dr8m|#{@order.id}|#{@order.total.to_f}|#{@order.number}|#{@order.bill_address.firstname}|#{@order.user.email}|||||||||||#{@order.payment_method.preferred_salt}")%>
+<%= submit_tag 'Proceed to payment' %>
+
+<script type="text/javascript">
+$("form.edit_order").attr("action", "<%=@order.payment_method.preferred_url-%>")
+</script>
