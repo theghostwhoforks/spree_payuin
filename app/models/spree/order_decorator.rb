@@ -7,6 +7,9 @@ module Spree
       go_to_state :confirm
       go_to_state :external_payment
       go_to_state :complete
+      # TODO - Write tests for these before plugging them in
+      # remove_transition :from => :delivery, :to => :confirm      
+      # remove_transition :from => :confirm, :to => :confirm      
     end
   end
 end

@@ -25,6 +25,9 @@ class Spree::Payuin::PaymentMethod < Spree::PaymentMethod
   end
   
   def capture(payment)
-    ActiveMerchant::Billing::Response.new(true, 'Bogus Gateway: Forced success', {}, :test => true, :authorization => '67890')
+    puts "here"*4
+    payment.update_attribute(:state, 'pending')
+    payment.complete
+    true
   end
 end

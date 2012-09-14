@@ -1,4 +1,6 @@
 en: 
   order_state:
     external_payment: "Payment"
-
+  payment_rejected: "Yousa screwed"
+  payment_success: "Yousa not screwed. Yousa happy"
+  
