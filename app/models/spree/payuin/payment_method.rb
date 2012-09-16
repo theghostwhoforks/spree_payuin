@@ -13,24 +13,22 @@ module Spree
         true
       end
 
-      def provider_class
-        self.class
-      end
-
-      def method_type
-        'payuin'
-      end
-
-    # TODO: Move to a separate class
       def actions
-          %w(capture)
+          %w(purchase)
+      end
+
+      def can_purchase?(payment)
+        true
       end
       
-      def capture(payment)
-        puts "here"*4
-        payment.update_attribute(:state, 'pending')
-        payment.complete
-        true
+      def purchase(money,source, options)
+        source.authorization = 42
+        source.avs_result = {'code' => 42}
+        source
+      end
+
+      def provider_class
+        self
       end
     end
   end

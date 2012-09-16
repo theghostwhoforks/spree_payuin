@@ -1,5 +1,5 @@
 class CreatePayuinPayments < ActiveRecord::Migration
-  def self.up
+  def change
     create_table :spree_payuin_payments do |t|
       t.string :payment_id
       t.string :mode
@@ -11,9 +11,5 @@ class CreatePayuinPayments < ActiveRecord::Migration
       t.string :response
       t.timestamps
     end
-  end
-
-  def self.down
-    drop_table :spree_payuin_payments
   end
 end

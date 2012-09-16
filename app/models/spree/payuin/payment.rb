@@ -1,7 +1,12 @@
 module Spree
   module Payuin
     class Payment < ActiveRecord::Base
-      has_many :payments, :as => :source
+
+      attr_accessor :authorization, :avs_result
+
+      def success?
+        true
+      end
     end
   end
 end
