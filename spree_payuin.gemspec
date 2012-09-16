@@ -1,12 +1,12 @@
 $:.push File.expand_path("../lib", __FILE__)
 
 # Maintain your gem's version:
-require "spree_payuin/version"
+require "spree/payuin/version"
 
 # Describe your gem and declare its dependencies:
 Gem::Specification.new do |s|
   s.name        = "spree_payuin"
-  s.version     = SpreePayuin::VERSION
+  s.version     = Spree::Payuin::VERSION
   s.authors     = ["vi"]
   s.email       = ["flawed.flint@gmail.com"]
   s.summary     = "Payu Gateway implementation for spree"

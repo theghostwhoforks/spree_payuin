@@ -8,6 +8,7 @@ class CreatePayuinPayments < ActiveRecord::Migration
       t.string :transaction_id
       t.float :amount
       t.string :checksum
+      t.string :response
       t.timestamps
     end
   end
