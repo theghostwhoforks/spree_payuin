@@ -4,7 +4,6 @@ module Spree
       def callback
         payment_method = Spree::PaymentMethod.find_by_name "PayuIn"
         order = Spree::Order.find params[:id]
-        puts order.state
         if order.next
           puts order.state
           flash[:notice] = I18n.t(:payment_success)
