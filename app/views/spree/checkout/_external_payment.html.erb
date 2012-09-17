@@ -6,7 +6,7 @@
 <%= hidden_field_tag 'email', @order.user.email %>
 <%= hidden_field_tag 'phone', @order.bill_address.phone %>
 <%= hidden_field_tag 'surl', "https://#{Spree::Config[:site_url]}/#{gateway_payuin_callback_path(@order.id)}" %>
-<%= hidden_field_tag 'furl', "https://#{Spree::Config[:site_url]}/#{gateway_payuin_callback_path(@order.id)}"" %>
+<%= hidden_field_tag 'furl', "https://#{Spree::Config[:site_url]}/#{gateway_payuin_callback_path(@order.id)}" %>
 <%= hidden_field_tag 'hash', Digest::SHA512.hexdigest("#{@order.payment_method.preferred_merchant_id}|foobar#{@order.id}ooga|#{@order.total.to_f}|#{@order.number}|#{@order.bill_address.firstname}|#{@order.user.email}|||||||||||#{@order.payment_method.preferred_salt}")%>
 <%= submit_tag 'Proceed to payment' %>
 
