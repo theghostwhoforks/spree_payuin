@@ -21,14 +21,14 @@ module Spree
         true
       end
       
-      def purchase(money,source, options)
+      def purchase(money, source, options)
         source.authorization = 42
         source.avs_result = {'code' => 42}
         source
       end
 
-      def provider_class
-        self
+      def payment_source_class
+        Spree::Payuin::PaymentTransaction
       end
     end
   end

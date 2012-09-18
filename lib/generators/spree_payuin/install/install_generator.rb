@@ -19,7 +19,7 @@ module SpreePayuin
       end
 
       def copy_migrations
-        migration_template "create_payuin_payments.rb", "db/migrate/create_payuin_payments.rb"
+        migration_template "create_payuin_payment_transactions.rb", "db/migrate/create_payuin_payment_transactions.rb"
       end
 
       def add_migrations
