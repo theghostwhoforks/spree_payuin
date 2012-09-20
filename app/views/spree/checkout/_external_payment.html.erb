@@ -11,7 +11,8 @@
 <%= submit_tag 'Proceed to payment' %>
 
 <script type="text/javascript">
-  <% url = ENV["RAILS_ENV"] != "development" ?  @order.payment_method.preferred_url : test_gateway_path(@order.id) -%>
+  <%# <% url = ENV["RAILS_ENV"] != "development" ?  @order.payment_method.preferred_url : test_gateway_path(@order.id) -%>
+  <% url =  @order.payment_method.preferred_url -%>
   $("form.edit_order").attr("action", "<%=url-%>")
   $("form.edit_order").attr("method", "post")
 </script>

@@ -23,7 +23,7 @@ module Spree
       
       def purchase(money, source, options)
         source.authorization = 42
-        source.avs_result = {'code' => 42}
+        source.avs_result = {'code' => 'success'}
         source
       end
 

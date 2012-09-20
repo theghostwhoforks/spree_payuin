@@ -1,6 +1,5 @@
 en: 
   order_state:
     external_payment: "Payment"
-  payment_rejected: "Yousa screwed"
-  payment_success: "Yousa not screwed. Yousa happy"
+  payment_processing_cancelled: "Payment was cancelled at the payment gateway."
   
