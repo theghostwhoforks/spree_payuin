@@ -30,7 +30,7 @@ module Spree
         options[:firstname] = order.bill_address.firstname
         options[:email] = order.user.email
         options[:salt] = order.payment_method.preferred_salt
-        compute_checksum options 
+        Digest::SHA512.hexdigest(checksum_template(options))
       end
 
       #for now as payu is unable to process
@@ -39,17 +39,18 @@ module Spree
       end
 
       def checksum_valid? checksum_data
-        self.checksum == checksum_data 
-      end
-
-      def self.compute_checksum data
-        Digest::SHA512.hexdigest(checksum_template(data))
+        salt = payment_method.preferred_salt
+        options = checksum_data.slice(:status,:email,:firstname,:productinfo,:amount,:txnid,:key).merge(:salt => salt)
+        checksum_data[:hash] == Digest::SHA512.hexdigest(return_checksum_template(options))
       end
 
       def self.checksum_template options
         "#{options[:key]}|#{options[:txnid]}|#{options[:amount]}|#{options[:productinfo]}|#{options[:firstname]}|#{options[:email]}|||||||||||#{options[:salt]}"   
       end
 
+      def self.return_checksum_template options
+        "#{options[:salt]}|#{options[:status]}|||||||||||#{options[:email]}|#{options[:firstname]}|#{options[:productinfo]}|#{options[:amount]}|#{options[:txnid]}|#{options[:key]}"
+      end
     end
   end
 end

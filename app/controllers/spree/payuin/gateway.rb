@@ -8,17 +8,14 @@ module Spree
 
       def handle_gateway_response params
         status = params[:status]
-        # puts @@gateway_response_handler.inspect
-        # @@gateway_response_handler[status].call
         self.send("#{status}_callback")
       end
 
-      def verify_checksum
-        valid = @order.payment.source.checksum_valid? params[:hash]
-        pus "log - #{valid}" * 2
+      def verify_checksum params
+        valid = @order.payment.source.checksum_valid?(params)
         unless valid
           flash[:error] = t(:payment_processing_failed)
-          respond_with(@order, :location => checkout_state_path(@order.state))
+          redirect_to spree.checkout_state_path(@order)
         end
       end
 
@@ -27,16 +24,14 @@ module Spree
           state_callback(:after)
         else
           flash[:error] = t(:payment_processing_failed)
-          respond_with(@order, :location => checkout_state_path(@order.state))
-          return
+          redirect_to spree.checkout_state_path(@order)
         end
 
         if @order.state == "complete" || @order.completed?
           flash[:notice] = t(:order_processed_successfully)
           redirect_to spree.order_path(@order, { :checkout_complete => true })
-          # respond_with(@order, :location => completion_route)
         else
-          respond_with(@order, :location => checkout_state_path(@order.state))
+          redirect_to spree.checkout_state_path(@order)
         end
       end
 
