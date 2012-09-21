@@ -1,14 +1,20 @@
 module Spree
   module Payuin
     module Gateway
+      def self.included(klass)
+        klass.skip_before_filter :verify_authenticity_token, :only=> [:callback]
+      end
+
       def callback
-        # verify_checksum params
+        #plug this in
+        # verify_checksum params 
         handle_gateway_response params
       end
 
       def handle_gateway_response params
-        status = params[:status]
-        self.send("#{status}_callback")
+        payment_transaction = @order.payment.source
+        payment_transaction.update_attributes!(:status => params[:status], :response => params.to_json)
+        self.send("#{params[:status]}_callback")
       end
 
       def verify_checksum params
