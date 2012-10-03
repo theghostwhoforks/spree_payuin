@@ -6,16 +6,12 @@ module Spree
       end
 
       def callback
-        #plug this in
-        # verify_checksum params 
-        handle_gateway_response params
-      end
-
-      def handle_gateway_response params
         payment_transaction = @order.payment.source
         payment_transaction.update_attributes!(:status => params[:status], :response => params.to_json)
+        verify_checksum params 
         self.send("#{params[:status]}_callback")
       end
+
 
       def verify_checksum params
         valid = @order.payment.source.checksum_valid?(params)
