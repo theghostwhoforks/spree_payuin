@@ -5,7 +5,7 @@ Spree::CheckoutController.class_eval do
     @order.payments.destroy_all
     payment_method = Spree::PaymentMethod.find_by_type "Spree::Payuin::PaymentMethod"
     @order.payments.build(:amount => @order.total, :payment_method_id => payment_method.id)    
-    payment = Spree::Payuin::PaymentTransaction.create_using @order, payment_method
+    payment = Spree::Payuin::PaymentTransaction.build_using @order, payment_method
     @order.payment.source = payment
     @order.save!
   end

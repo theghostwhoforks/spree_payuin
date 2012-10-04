@@ -14,7 +14,7 @@ module Spree
         true
       end
 
-      def self.create_using order, payment_method
+      def self.build_using order, payment_method
         Spree::Payuin::PaymentTransaction.new.tap do |t|
           t.payment_method = payment_method
           t.generate_checksum(order)
