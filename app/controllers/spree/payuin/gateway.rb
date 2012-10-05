@@ -2,7 +2,7 @@ module Spree
   module Payuin
     module Gateway
       def self.included(klass)
-        klass.skip_before_filter :verify_authenticity_token, :only=> [:callback]
+        klass.skip_before_filter :verify_authenticity_token,:ensure_valid_state, :only=> [:callback]
       end
 
       def callback
