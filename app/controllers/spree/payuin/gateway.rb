@@ -23,10 +23,6 @@ module Spree
       end
 
       def success_callback
-        logger.info "order details commence"
-        logger.info @order.inspect
-        logger.info @order.state
-        logger.info "order details done"
         if @order.next
           state_callback(:after)
         else
