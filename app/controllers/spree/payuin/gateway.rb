@@ -6,6 +6,7 @@ module Spree
       end
 
       def callback
+        @order = Spree::Order.find params[:id]
         payment_transaction = @order.payment.source
         payment_transaction.update_attributes!(:status => params[:status], :response => params.to_json)
         verify_checksum params 
