@@ -22,6 +22,10 @@ module Spree
       end
 
       def success_callback
+        puts "order details commence"
+        puts @order.inspect
+        puts @order.state
+        puts "order details done"
         if @order.next
           state_callback(:after)
         else
