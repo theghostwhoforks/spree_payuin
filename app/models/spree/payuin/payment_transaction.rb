@@ -35,7 +35,7 @@ module Spree
 
       #for now as payu is unable to process random secure id generated txn ids
       def generate_transaction_id number
-        self.transaction_id = number
+        self.transaction_id = "bots-#{SecureRandom.hex}"
       end
 
       def checksum_valid? checksum_data
