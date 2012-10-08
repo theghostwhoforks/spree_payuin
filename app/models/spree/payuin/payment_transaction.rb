@@ -9,8 +9,7 @@ module Spree
       attr_accessor :authorization, :avs_result
 
       def success?
-        puts "status == #{self.status}"
-        true
+        self.status == 'success'
       end
 
       def self.build_using order, payment_method

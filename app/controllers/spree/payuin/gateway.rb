@@ -23,18 +23,19 @@ module Spree
       end
 
       def success_callback
-        if @order.next
+        begin
+          @order.next!
           state_callback(:after)
-        else
+        rescue
           flash[:error] = t(:payment_processing_failed)
-          redirect_to spree.checkout_state_path(@order)
+          redirect_to spree.checkout_state_path(@order) and return
         end
 
         if @order.state == "complete" || @order.completed?
           flash[:notice] = t(:order_processed_successfully)
-          redirect_to spree.order_path(@order, { :checkout_complete => true })
+          redirect_to spree.order_path(@order, { :checkout_complete => true }) and return
         else
-          redirect_to spree.checkout_state_path(@order)
+          redirect_to spree.checkout_state_path(@order) and return
         end
       end
 

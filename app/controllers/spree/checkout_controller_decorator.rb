@@ -9,4 +9,11 @@ Spree::CheckoutController.class_eval do
     @order.payment.source = payment
     @order.save!
   end
+
+  # def before_complete
+  #   unless @order.payment.source.success?
+  #     flash[:error] = t(:payment_processing_failed)
+  #     redirect_to spree.edit_order_path(@order)
+  #   end
+  # end
 end
