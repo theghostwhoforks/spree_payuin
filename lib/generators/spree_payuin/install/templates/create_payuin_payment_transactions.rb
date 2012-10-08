@@ -4,6 +4,8 @@ class CreatePayuinPaymentTransactions < ActiveRecord::Migration
       t.string :status
       t.string :response
       t.integer :payment_method_id
+      t.string :transaction_id
+      t.string :checksum
       t.timestamps
     end
   end

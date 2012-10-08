@@ -4,10 +4,9 @@ module Spree
       self.table_name = 'spree_payuin_payment_transactions'
       belongs_to :payment_method, :class_name => 'Spree::Payuin::PaymentMethod'
     
-      attr_accessible :status, :response, :payment_method_id
+      attr_accessible :status, :response, :payment_method_id, :checksum, :transaction_id
 
       attr_accessor :authorization, :avs_result
-      attr_reader :checksum, :transaction_id
 
       def success?
         puts "status == #{self.status}"
@@ -31,12 +30,12 @@ module Spree
         options[:firstname] = order.bill_address.firstname
         options[:email] = order.user.email
         options[:salt] = payment_method.preferred_salt
-        @checksum = Digest::SHA512.hexdigest(checksum_template(options))
+        self.checksum = Digest::SHA512.hexdigest(checksum_template(options))
       end
 
       #for now as payu is unable to process random secure id generated txn ids
       def generate_transaction_id number
-        @transaction_id = number
+        self.transaction_id = number
       end
 
       def checksum_valid? checksum_data
