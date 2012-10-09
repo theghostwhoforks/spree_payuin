@@ -15,15 +15,21 @@ module Spree
       def self.build_using order, payment_method
         Spree::Payuin::PaymentTransaction.new.tap do |t|
           t.payment_method = payment_method
+          t.generate_transaction_id
           t.generate_checksum(order)
-          t.generate_transaction_id(order.number)
         end
+      end
+
+      def checksum_valid? checksum_data
+        salt = payment_method.preferred_salt
+        options = checksum_data.slice(:status,:email,:firstname,:productinfo,:amount,:txnid,:key).merge(:salt => salt)
+        checksum_data[:hash] == Digest::SHA512.hexdigest(return_checksum_template(options))
       end
 
       def generate_checksum order
         options = {}
         options[:key] = payment_method.preferred_merchant_id
-        options[:txnid] = generate_transaction_id order.number
+        options[:txnid] = self.transaction_id 
         options[:amount] = order.total.to_f
         options[:productinfo] = order.number
         options[:firstname] = order.bill_address.firstname
@@ -32,16 +38,10 @@ module Spree
         self.checksum = Digest::SHA512.hexdigest(checksum_template(options))
       end
 
-      #for now as payu is unable to process random secure id generated txn ids
-      def generate_transaction_id number
-        self.transaction_id = number 
+      def generate_transaction_id
+        self.transaction_id = SecureRandom.hex(7)
       end
 
-      def checksum_valid? checksum_data
-        salt = payment_method.preferred_salt
-        options = checksum_data.slice(:status,:email,:firstname,:productinfo,:amount,:txnid,:key).merge(:salt => salt)
-        checksum_data[:hash] == Digest::SHA512.hexdigest(return_checksum_template(options))
-      end
 
       def checksum_template options
         "#{options[:key]}|#{options[:txnid]}|#{options[:amount]}|#{options[:productinfo]}|#{options[:firstname]}|#{options[:email]}|||||||||||#{options[:salt]}"   
