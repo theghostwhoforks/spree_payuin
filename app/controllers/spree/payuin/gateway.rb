@@ -23,10 +23,9 @@ module Spree
       end
 
       def success_callback
-        begin
-          @order.next!
+        if @order.next
           state_callback(:after)
-        rescue
+        else
           flash[:error] = t(:payment_processing_failed)
           redirect_to spree.checkout_state_path(@order) and return
         end
