@@ -10,6 +10,7 @@
 <%= hidden_field_tag 'curl', "https://#{Spree::Config[:site_url]}#{gateway_payuin_callback_path(@order.id)}" %>
 <%= hidden_field_tag 'hash', @order.payment.source.checksum %>
 <%= hidden_field_tag 'drop_category', "EMI,COD" %>
+<%= hidden_field_tag 'touturl', "https://#{Spree::Config[:site_url]}/cart" %>
 <%= submit_tag 'Proceed to payment' %>
 
 <script type="text/javascript">
