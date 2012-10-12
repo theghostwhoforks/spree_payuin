@@ -7,6 +7,7 @@ Spree::CheckoutController.class_eval do
     @order.payments.build(:amount => @order.total, :payment_method_id => payment_method.id)    
     payment = Spree::Payuin::PaymentTransaction.build_using @order, payment_method
     @order.payment.source = payment
+    @order.state = "external_payment"
     @order.save!
   end
 

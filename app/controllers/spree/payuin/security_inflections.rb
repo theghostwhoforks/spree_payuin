@@ -18,8 +18,15 @@ module Spree
 
       #TODO - remove unsetting user on orde. we won't be able to track cart abandonment because of this
       def dissociate_user
-        if order = current_order and order.state == 'external_payment'
-          order.destroy
+        if user = try_spree_current_user
+          if order = current_order and order.state == 'external_payment'
+            @current_order = nil
+            session[:order_id] = nil
+            user.spree_orders.delete order
+            order.user_id = nil
+            order.state = 'cart'
+            order.save!
+          end
         end
       end
 
