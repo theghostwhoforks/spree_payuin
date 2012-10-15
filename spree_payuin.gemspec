@@ -15,6 +15,6 @@ Gem::Specification.new do |s|
   s.test_files = Dir["spec/**/*"]
 
   s.add_dependency "spree", "~> 1.2.0"
-  s.add_development_dependency 'rspec'
+  s.add_development_dependency 'rspec-rails'
   s.add_development_dependency 'sqlite3'
 end
