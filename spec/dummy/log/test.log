@@ -1,7 +1,0 @@
-Connecting to database specified by database.yml
-Connecting to database specified by database.yml
-  [1m[36m (0.6ms)[0m  [1mselect owner_id, owner_type, name, value from spree_preferences where `key` is null[0m
-SQLite3::SQLException: no such table: spree_preferences: select owner_id, owner_type, name, value from spree_preferences where `key` is null
-Connecting to database specified by database.yml
-  [1m[36m (0.3ms)[0m  [1mselect owner_id, owner_type, name, value from spree_preferences where `key` is null[0m
-SQLite3::SQLException: no such table: spree_preferences: select owner_id, owner_type, name, value from spree_preferences where `key` is null

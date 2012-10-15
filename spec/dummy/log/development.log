@@ -1,7 +1,0 @@
-Connecting to database specified by database.yml
-Connecting to database specified by database.yml
-  [1m[36m (0.3ms)[0m  [1mselect owner_id, owner_type, name, value from spree_preferences where `key` is null[0m
-SQLite3::SQLException: no such table: spree_preferences: select owner_id, owner_type, name, value from spree_preferences where `key` is null
-DEPRECATION WARNING: redirect blocks with arity of 1 are deprecated. Your block must take 2 parameters: the environment, and a request object. (called from block in <top (required)> at /Users/vi/area51/code/spree_payuin/config/routes.rb:3)
-DEPRECATION WARNING: redirect blocks with arity of 1 are deprecated. Your block must take 2 parameters: the environment, and a request object. (called from block in <top (required)> at /Users/vi/area51/code/spree_payuin/config/routes.rb:3)
-DEPRECATION WARNING: redirect blocks with arity of 1 are deprecated. Your block must take 2 parameters: the environment, and a request object. (called from block in <top (required)> at /Users/vi/area51/code/spree_payuin/config/routes.rb:3)
