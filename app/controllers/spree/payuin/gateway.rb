@@ -17,6 +17,7 @@ module Spree
       def verify_checksum params
         valid = @order.payment.source.checksum_valid?(params)
         unless valid
+          @order.payment.source.update_attributes(:status => 'failure')
           flash[:error] = t(:payment_processing_failed)
           redirect_to spree.checkout_state_path(@order)
         end
