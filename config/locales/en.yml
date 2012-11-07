@@ -1,5 +1,5 @@
 en: 
   order_state:
     external_payment: "Payment"
-  payment_processing_cancelled: "Payment was cancelled at the payment gateway."
+  payment_processing_cancelled: "Payment transaction has been cancelled. Please try again."
   duplicate_order: "You have an existing order in payment phase. Please finish that before you can update the order." 
