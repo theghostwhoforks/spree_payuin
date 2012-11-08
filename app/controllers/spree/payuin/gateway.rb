@@ -40,11 +40,15 @@ module Spree
       end
 
       def failure_callback
+        @order.state = "cart"
+        @order.save!
         flash[:error] = t(:payment_processing_failed)
         redirect_to spree.edit_order_path(@order)        
       end
 
       def cancel_callback
+        @order.state = "cart"
+        @order.save!
         flash[:notice] = t(:payment_processing_cancelled)
         redirect_to spree.edit_order_path(@order)
       end
