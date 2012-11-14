@@ -1,0 +1,10 @@
+<div id="details">
+<% payment.log_entries.each do |log| %>
+<% details = ActiveSupport::JSON.decode(log.details) rescue "" %>
+<div>
+  <p>
+    <%= details %> 
+  </p>
+</div>
+<% end %>
+</div>
