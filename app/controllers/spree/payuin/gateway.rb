@@ -7,8 +7,10 @@ module Spree
 
       def callback
         @order = Spree::Order.find params[:id]
-        payment_transaction = @order.payment.source
-        payment_transaction.update_attributes!(:status => params[:status], :response => params.to_json)
+        payment = @order.payment
+        payment.log_entries.create(:details => params.to_json)
+        payment_transaction = payment.source
+        payment_transaction.update_attributes!(:status => params[:status])
         verify_checksum params 
         self.send("#{params[:status]}_callback")
       end
