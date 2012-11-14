@@ -8,8 +8,7 @@ module Spree
       def callback
         @order = Spree::Order.find params[:id]
         payment = @order.payment
-        payu_response = params.slice("mihpayid", "mode","unmappedstatus","txnid", "hash","PG_TYPE","bank_ref_num","bankcode","error","cardhash")
-        payment.log_entries.create(:details => payu_response.to_json)
+        record_transaction payment
         payment_transaction = payment.source
         payment_transaction.update_attributes!(:status => params[:status])
         verify_checksum params 
@@ -54,6 +53,13 @@ module Spree
         @order.save!
         flash[:notice] = t(:payment_processing_cancelled)
         redirect_to spree.edit_order_path(@order)
+      end
+
+      def record_transaction payment
+        payu_response = params.slice("mihpayid", "mode","unmappedstatus","txnid", "hash","PG_TYPE","bank_ref_num","bankcode","error","cardhash")
+        log_entry = payment.log_entries.build
+        log_entry.details = payu_response.to_json
+        log_entry.save!
       end
     end
   end
