@@ -6,7 +6,7 @@ module Spree
       end
 
       def callback
-        @order = Spree::Order.find params[:id]
+        @order = Spree::Order.find_by_number params[:productinfo]
         payment = @order.payment
         record_transaction payment
         payment_transaction = payment.source
