@@ -8,7 +8,8 @@ module Spree
       def callback
         @order = Spree::Order.find params[:id]
         payment = @order.payment
-        payment.log_entries.create(:details => params.to_json)
+        payu_response = params.slice("mihpayid", "mode","unmappedstatus","txnid", "hash","PG_TYPE","bank_ref_num","bankcode","error","cardhash")
+        payment.log_entries.create(:details => payu_response.to_json)
         payment_transaction = payment.source
         payment_transaction.update_attributes!(:status => params[:status])
         verify_checksum params 
