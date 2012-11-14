@@ -11,7 +11,14 @@
 <%= hidden_field_tag 'hash', @order.payment.source.checksum %>
 <%= hidden_field_tag 'drop_category', "EMI,COD,NB" %>
 <%= hidden_field_tag 'touturl', "https://#{Spree::Config[:site_url]}/cart" %>
-<%= submit_tag 'Proceed to payment' %>
+
+<div>
+  <p> You will now be re-directed to www.Payu.in a certified and trusted payment gateway to complete this transaction.</p>
+  <img src='/assets/store/payment_confidence.png'/>
+  <p> Once the payment is complete, you will be brought back to our site and shown an order confirmation page with complete details about your order.</p>
+  <p> Please click the "Confirm" button to proceed. </p>
+</div>
+<%= submit_tag t(:confirm) %>
 
 <script type="text/javascript">
   <% url =  @order.payment_method.preferred_url -%>
