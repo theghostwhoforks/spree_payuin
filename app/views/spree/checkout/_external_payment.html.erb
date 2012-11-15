@@ -16,7 +16,7 @@
 <%= hidden_field_tag 'furl', "https://#{Spree::Config[:site_url]}#{gateway_payuin_callback_path}" %>
 <%= hidden_field_tag 'curl', "https://#{Spree::Config[:site_url]}#{gateway_payuin_callback_path}" %>
 <%= hidden_field_tag 'hash', @order.payment.source.checksum %>
-<%= hidden_field_tag 'drop_category', "EMI,COD,NB" %>
+<%= hidden_field_tag 'drop_category', "EMI,COD" %>
 <%= hidden_field_tag 'touturl', "https://#{Spree::Config[:site_url]}/cart" %>
 
 
