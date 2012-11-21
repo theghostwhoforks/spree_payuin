@@ -19,8 +19,9 @@
 <%= hidden_field_tag 'drop_category', "EMI,COD" %>
 <%= hidden_field_tag 'touturl', "https://#{Spree::Config[:site_url]}/cart" %>
 
-
-<%= submit_tag t(:confirm), :class => 'btn btn-inverse pull-right' %>
+<div data-hook="confirm_payment_button">
+  <%= submit_tag t(:confirm),  :class => 'btn btn-inverse pull-right'%>
+</div>
 
 <script type="text/javascript">
   <% url =  @order.payment_method.preferred_url -%>
