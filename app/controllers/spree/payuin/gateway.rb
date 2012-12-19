@@ -17,7 +17,6 @@ module Spree
         self.send(callback_method)
       end
 
-
       def verify_checksum params
         valid = @order.payment.source.checksum_valid?(params)
         unless valid
@@ -26,7 +25,6 @@ module Spree
           redirect_to spree.checkout_state_path(@order)
         end
       end
-
 
       def success_callback
         if @order.next

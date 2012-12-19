@@ -9,7 +9,7 @@ module Spree
       attr_accessor :authorization, :avs_result
 
       def success?
-        self.status == 'success'
+        ["in progress", "success"].include? self.status
       end
 
       def self.build_using order, payment_method
