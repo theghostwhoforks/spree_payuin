@@ -28,10 +28,11 @@
 <%= hidden_field_tag 'touturl', "https://#{Spree::Config[:site_url]}/cart" %>
 
 <% address = @order.ship_address %>
+
 <%= hidden_field_tag 'shipping_firstname', address.firstname %>
 <%= hidden_field_tag 'shipping_lastname', address.lastname %>
 <%= hidden_field_tag 'shipping_address1', address.address1 %>
-<%= hidden_field_tag 'shipping_address2', address.address2 %>
+<%= hidden_field_tag 'shipping_address2', "N/A" %>
 <%= hidden_field_tag 'shipping_city', address.city %>
 <%= hidden_field_tag 'shipping_state', address.state.abbr %>
 <%= hidden_field_tag 'shipping_country', address.country.name %>

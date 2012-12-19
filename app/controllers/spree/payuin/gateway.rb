@@ -12,7 +12,8 @@ module Spree
         payment_transaction = payment.source
         payment_transaction.update_attributes!(:status => params[:status])
         verify_checksum params 
-        self.send("#{params[:status]}_callback")
+        callback_method = "#{params[:status]}_callback".gsub(/\s/,'_')
+        self.send(callback_method)
       end
 
 
@@ -24,6 +25,8 @@ module Spree
           redirect_to spree.checkout_state_path(@order)
         end
       end
+
+      alias_method :in_progress, :success_callback
 
       def success_callback
         if @order.next
