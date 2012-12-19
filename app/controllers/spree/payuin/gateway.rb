@@ -3,6 +3,7 @@ module Spree
     module Gateway
       def self.included(klass)
         klass.skip_before_filter :verify_authenticity_token,:ensure_valid_state, :only=> [:callback]
+        alias_method :in_progress_callback, :success_callback
       end
 
       def callback
@@ -26,7 +27,6 @@ module Spree
         end
       end
 
-      alias_method :in_progress, :success_callback
 
       def success_callback
         if @order.next
