@@ -44,11 +44,11 @@
     <%= hidden_field_tag 'shipping_phoneverified', "no" %>
     </span>
   <div data-hook="order_summary" class="span3 rightpanel">
-  <div>
+  </div>
 </div>
 
-<script type="text/javascript">
+<%= javascript_tag do %>
   <% url =  @order.payment_method.preferred_url -%>
   $("form.edit_order").attr("action", "<%=url-%>")
   $("form.edit_order").attr("method", "post")
-</script>
+<% end %>
