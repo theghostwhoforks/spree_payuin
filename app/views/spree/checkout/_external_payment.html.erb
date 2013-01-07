@@ -1,21 +1,19 @@
 <div class="row payment-flow-cont">
-  <div data_hook="external_payment" class="ext-pay span9">
+  <div data_hook="payuin_external_payment" class="ext-pay span9">
     <section class="bg">
-  <h3><%= t("flow_title.#{@order.state}")%></h3>
-      
-    <p> You will now be redirected to <a id="payu" href='https://www.payu.in' target='blank'>PayU</a>, a certified and trusted payment gateway to complete this transaction.</p>
-    <p><img src='/assets/store/payment_confidence.png'/></p>
-    <br/>
-    <p> Once the payment is complete, you will be brought back to our site and shown an order confirmation page with complete details about your order.</p>
-    <br/>
-    <p> Please click the "Confirm" button to proceed. </p>
-    <div data-hook="confirm_payment_button">
-      <%= submit_tag t(:confirm_text),  :class => 'btn btn-main pull-right'%>
-    </div>
+      <h3><%= t("flow_title.#{@order.state}")%></h3>
+      <p> You will now be redirected to <a id="payu" href='https://www.payu.in' target='blank'>PayU</a>, a certified and trusted payment gateway to complete this transaction.</p>
+      <p data_hook="payuin_external_payment_confidence_image"><img src='/assets/spree_payuin/payment_confidence.png'/></p>
+      <br/>
+      <p> Once the payment is complete, you will be brought back to our site and shown an order confirmation page with complete details about your order.</p>
+      <br/>
+      <p> Please click the "Confirm" button to proceed. </p>
+      <div data-hook="confirm_payment_button">
+        <%= submit_tag t(:confirm_text),  :class => 'btn btn-main pull-right'%>
+      </div>
     </section>
   </div>
-
-    <span>
+  <span>
     <%= hidden_field_tag 'key', @order.payment_method.preferred_merchant_id %>
     <%= hidden_field_tag 'txnid', @order.payment.source.transaction_id %>
     <%= hidden_field_tag 'amount', @order.total.to_f %>
@@ -42,7 +40,7 @@
     <%= hidden_field_tag 'shipping_zipcode', address.zipcode %>
     <%= hidden_field_tag 'shipping_phone', address.phone %>
     <%= hidden_field_tag 'shipping_phoneverified', "no" %>
-    </span>
+  </span>
   <div data-hook="order_summary" class="span3 rightpanel">
   </div>
 </div>
