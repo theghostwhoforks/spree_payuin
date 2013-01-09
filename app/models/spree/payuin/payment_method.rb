@@ -6,7 +6,7 @@ module Spree
       preference :mode,        :string
       preference :merchant_id, :string
       preference :salt,        :string
-      
+
       attr_accessible :preferred_account_id, :preferred_url, :preferred_mode, :preferred_merchant_id, :preferred_salt
 
       def payment_profiles_supported?
@@ -14,13 +14,13 @@ module Spree
       end
 
       def actions
-          %w(purchase)
+        %w(purchase)
       end
 
       def can_purchase?(payment)
         true
       end
-      
+
       def purchase(money, source, options)
         source.authorization = 42
         source.avs_result = {'code' => 'success'}

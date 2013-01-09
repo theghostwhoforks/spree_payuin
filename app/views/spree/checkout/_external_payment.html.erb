@@ -2,13 +2,15 @@
   <div data_hook="payuin_external_payment" class="ext-pay span9">
     <section class="bg">
       <h3><%= t("flow_title.#{@order.state}")%></h3>
-      <p> You will now be redirected to <a id="payu" href='https://www.payu.in' target='blank'>PayU</a>, a certified and trusted payment gateway to complete this transaction.</p>
-      <p data_hook="payuin_external_payment_confidence_image"><img src='/assets/spree_payuin/payment_confidence.png'/></p>
-      <br/>
-      <p> Once the payment is complete, you will be brought back to our site and shown an order confirmation page with complete details about your order.</p>
-      <br/>
-      <p> Please click the "Confirm" button to proceed. </p>
-      <div data-hook="confirm_payment_button">
+      <div data_hook="payuin_external_payment_write_up">
+        <p> You will now be redirected to <a id="payu" href='https://www.payu.in' target='blank'>PayU</a>, a certified and trusted payment gateway to complete this transaction.</p>
+        <p data_hook="payuin_external_payment_confidence_image"><img src='/assets/spree_payuin/payment_confidence.png'/></p>
+        <br/>
+        <p> Once the payment is complete, you will be brought back to our site and shown an order confirmation page with complete details about your order.</p>
+        <br/>
+      <div>
+      <div data-hook="payuin_external_payment_confirmation">
+        <p> Please click the "Confirm" button to proceed. </p>
         <%= submit_tag t(:confirm_text),  :class => 'btn btn-main pull-right'%>
       </div>
     </section>
@@ -44,7 +46,6 @@
   <div data-hook="order_summary" class="span3 rightpanel">
   </div>
 </div>
-
 <%= javascript_tag do %>
   <% url =  @order.payment_method.preferred_url -%>
   $("form.edit_order").attr("action", "<%=url-%>")
