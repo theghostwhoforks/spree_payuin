@@ -1,41 +1,128 @@
-# This file is copied to spec/ when you run 'rails generate rspec:install'
+# This file is copied to ~/spec when you run 'ruby script/generate rspec'
+# from the project root directory.
 ENV["RAILS_ENV"] ||= 'test'
 require File.expand_path("../dummy/config/environment", __FILE__)
 require 'rspec/rails'
-require 'rspec/autorun'
 
-# Requires supporting ruby files with custom matchers and macros, etc,
-# in spec/support/ and its subdirectories.
-Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
+# Requires supporting files with custom matchers and macros, etc,
+# in ./support/ and its subdirectories.
+Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each {|f| require f}
+
+require 'database_cleaner'
+require 'faker'
+
 require 'spree/core/testing_support/factories'
-require 'spree/core/testing_support/fixtures'
+require 'spree/core/testing_support/controller_requests'
+require 'spree/core/testing_support/authorization_helpers'
+require 'spree/core/testing_support/preferences'
+require 'spree/core/testing_support/flash'
+
+require 'spree/core/url_helpers'
+require 'paperclip/matchers'
 
 RSpec.configure do |config|
-  # ## Mock Framework
+  # == Mock Framework
   #
   # If you prefer to use mocha, flexmock or RR, uncomment the appropriate line:
   #
   # config.mock_with :mocha
   # config.mock_with :flexmock
   # config.mock_with :rr
+  config.mock_with :rspec
 
-  # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
 
+  #config.include Devise::TestHelpers, :type => :controller
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
-  # examples within a transaction, remove the following line or assign false
+  # examples within a transaction, comment the following line or assign false
   # instead of true.
-  config.use_transactional_fixtures = true
+  config.use_transactional_fixtures = false
 
-  # If true, the base class of anonymous controllers will be inferred
-  # automatically. This will be the default behavior in future versions of
-  # rspec-rails.
-  config.infer_base_class_for_anonymous_controllers = false
+  config.before(:each) do
+    if example.metadata[:js]
+      DatabaseCleaner.strategy = :truncation, { :except => ['spree_countries', 'spree_zones', 'spree_zone_members', 'spree_states', 'spree_roles'] }
+    else
+      DatabaseCleaner.strategy = :transaction
+    end
+  end
 
-  # Run specs in random order to surface order dependencies. If you find an
-  # order dependency and want to debug it, you can fix the order by providing
-  # the seed, which is printed after each run.
-  #     --seed 1234
-  config.order = "random"
-  config.color_enabled = true
+  config.before(:each) do
+    DatabaseCleaner.start
+    reset_spree_preferences
+  end
+
+  config.after(:each) do
+    DatabaseCleaner.clean
+  end
+
+  config.include FactoryGirl::Syntax::Methods
+  config.include Spree::Core::UrlHelpers
+  config.include Spree::Core::TestingSupport::ControllerRequests
+  config.include Spree::Core::TestingSupport::Preferences
+  config.include Spree::Core::TestingSupport::Flash
+
+  config.include Paperclip::Shoulda::Matchers
+end
+
+shared_context "custom products" do
+  before(:each) do
+    reset_spree_preferences do |config|
+      config.allow_backorders = true
+    end
+
+    taxonomy = FactoryGirl.create(:taxonomy, :name => 'Categories')
+    root = taxonomy.root
+    clothing_taxon = FactoryGirl.create(:taxon, :name => 'Clothing', :parent_id => root.id)
+    bags_taxon = FactoryGirl.create(:taxon, :name => 'Bags', :parent_id => root.id)
+    mugs_taxon = FactoryGirl.create(:taxon, :name => 'Mugs', :parent_id => root.id)
+
+    taxonomy = FactoryGirl.create(:taxonomy, :name => 'Brands')
+    root = taxonomy.root
+    apache_taxon = FactoryGirl.create(:taxon, :name => 'Apache', :parent_id => root.id)
+    rails_taxon = FactoryGirl.create(:taxon, :name => 'Ruby on Rails', :parent_id => root.id)
+    ruby_taxon = FactoryGirl.create(:taxon, :name => 'Ruby', :parent_id => root.id)
+
+    FactoryGirl.create(:custom_product, :name => 'Ruby on Rails Ringer T-Shirt', :price => '19.99', :taxons => [rails_taxon, clothing_taxon])
+    FactoryGirl.create(:custom_product, :name => 'Ruby on Rails Mug', :price => '15.99', :taxons => [rails_taxon, mugs_taxon])
+    FactoryGirl.create(:custom_product, :name => 'Ruby on Rails Tote', :price => '15.99', :taxons => [rails_taxon, bags_taxon])
+    FactoryGirl.create(:custom_product, :name => 'Ruby on Rails Bag', :price => '22.99', :taxons => [rails_taxon, bags_taxon])
+    FactoryGirl.create(:custom_product, :name => 'Ruby on Rails Baseball Jersey', :price => '19.99', :taxons => [rails_taxon, clothing_taxon])
+    FactoryGirl.create(:custom_product, :name => 'Ruby on Rails Stein', :price => '16.99', :taxons => [rails_taxon, mugs_taxon])
+    FactoryGirl.create(:custom_product, :name => 'Ruby on Rails Jr. Spaghetti', :price => '19.99', :taxons => [rails_taxon, clothing_taxon])
+    FactoryGirl.create(:custom_product, :name => 'Ruby Baseball Jersey', :price => '19.99', :taxons => [ruby_taxon, clothing_taxon])
+    FactoryGirl.create(:custom_product, :name => 'Apache Baseball Jersey', :price => '19.99', :taxons => [apache_taxon, clothing_taxon])
+  end
+end
+
+
+
+shared_context "product prototype" do
+
+  def build_option_type_with_values(name, values)
+    ot = FactoryGirl.create(:option_type, :name => name)
+    values.each do |val|
+      ot.option_values.create({:name => val.downcase, :presentation => val}, :without_protection => true)
+    end
+    ot
+  end
+
+  let(:product_attributes) do
+    # FactoryGirl.attributes_for is un-deprecated!
+    #   https://github.com/thoughtbot/factory_girl/issues/274#issuecomment-3592054
+    FactoryGirl.attributes_for(:simple_product)
+  end
+
+  let(:prototype) do
+    size = build_option_type_with_values("size", %w(Small Medium Large))
+    FactoryGirl.create(:prototype, :name => "Size", :option_types => [ size ])
+  end
+
+  let(:option_values_hash) do
+    hash = {}
+    prototype.option_types.each do |i|
+      hash[i.id.to_s] = i.option_value_ids
+    end
+    hash
+  end
+
 end
