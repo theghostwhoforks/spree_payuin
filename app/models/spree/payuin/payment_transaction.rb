@@ -1,9 +1,10 @@
+#Copyright 2013 ThoughtWorks, Inc. Licensed under the Apache License, Version 2.0.
 module Spree
   module Payuin
     class PaymentTransaction < ActiveRecord::Base
       self.table_name = 'spree_payuin_payment_transactions'
       belongs_to :payment_method, :class_name => 'Spree::Payuin::PaymentMethod'
-    
+
       attr_accessible :status, :response, :payment_method_id, :checksum, :transaction_id
 
       attr_accessor :authorization, :avs_result
@@ -29,7 +30,7 @@ module Spree
       def generate_checksum order
         options = {}
         options[:key] = payment_method.preferred_merchant_id
-        options[:txnid] = self.transaction_id 
+        options[:txnid] = self.transaction_id
         options[:amount] = order.total.to_f
         options[:productinfo] = order.number
         options[:firstname] = order.bill_address.firstname
@@ -44,7 +45,7 @@ module Spree
 
 
       def checksum_template options
-        "#{options[:key]}|#{options[:txnid]}|#{options[:amount]}|#{options[:productinfo]}|#{options[:firstname]}|#{options[:email]}|||||||||||#{options[:salt]}"   
+        "#{options[:key]}|#{options[:txnid]}|#{options[:amount]}|#{options[:productinfo]}|#{options[:firstname]}|#{options[:email]}|||||||||||#{options[:salt]}"
       end
 
       def return_checksum_template options

@@ -1,3 +1,4 @@
+#Copyright 2013 ThoughtWorks, Inc. Licensed under the Apache License, Version 2.0.
 module Spree
   module Payuin
     class PaymentMethod < Spree::PaymentMethod

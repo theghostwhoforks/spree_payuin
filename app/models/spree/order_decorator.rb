@@ -1,3 +1,4 @@
+#Copyright 2013 ThoughtWorks, Inc. Licensed under the Apache License, Version 2.0.
 Spree::Order.class_eval do
   checkout_flow do
     go_to_state :address
