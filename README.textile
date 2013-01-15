@@ -1,0 +1,36 @@
+h2. Spree-Payuin Integration
+
+This spree extension enables a shop to use "Payu India":https://www.payu.in as a payment gateway. Given that this is an Indian Payment Gateway, 
+the extension builds the "two factor authentication.":http://en.wikipedia.org/wiki/Two-factor_authentication capability into spree.
+
+h3. Default Spree payments
+
+By default, Spree assumes that shops can capture and send the payment information to the gateway through a backend call from the store's server. However, this means 
+that the shops need to be "PCI SSC":https://www.pcisecuritystandards.org certified. Also, if a gateway needs to implement two factor authentication, a backend call 
+from the server does not work. Instead, the call to the gateway needs to happen from the user's browser. 
+
+h3. Impact of Two Factor Authentication
+
+In two factor authentication, the payment details are provided to the gateway and then the user gets redirected to their respective bank's page where the user enters 
+the bank password. The success of this will be reported to the gateway and in turn the gateway returns success or failure. This means that the call to the gateway cannot
+ be from the backend server but needs to happen from the browser.
+
+h3. Implementation
+
+The new order checkout phase is: *Cart -> Address -> Shipping -> Confirmation -> Payment -> Complete*
+
+In the payment phase:
+
+* The relavant order details are used to generate a checksum on the server
+* Using a shared salt, the checksum is encrypted and encoded
+* This along with all the necessary order data are populated in hidden fields in a page and shown in the checkout phase
+* When the user proceeds with payment, this data is sent to Payuin which in turn decodes and decrypts the checksum and verifies the values to be intact
+* On successful checksum match, the user is shown the form to enter payment details
+* After two factor authentication, the payment gateway issues a redirect to the right (success, failure or cancel) URL with the necessary data. The browser then redirects to 
+this url and the server would know about the payment
+
+h3. Limitations
+
+* Payuin should be the only payment method. Cannot have any other gateway configured
+* Does not do a payment "reconciliation":http://en.wikipedia.org/wiki/Reconciliation_(accounting) to make sure that the amount paid in the gateway and the order value matches
+* 
