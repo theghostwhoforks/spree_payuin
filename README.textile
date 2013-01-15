@@ -33,4 +33,3 @@ h3. Limitations
 
 * Payuin should be the only payment method. Cannot have any other gateway configured
 * Does not do a payment "reconciliation":http://en.wikipedia.org/wiki/Reconciliation_(accounting) to make sure that the amount paid in the gateway and the order value matches
-* 
