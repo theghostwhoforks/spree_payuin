@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.email       = ["varun.arbatti@thoughtworks.com"]
   s.summary     = "Payuin Gateway implementation for spree"
 
-  s.files = Dir["{app,config,db,lib}/**/*"] + ["MIT-LICENSE", "Rakefile", "README.rdoc"]
+  s.files = Dir["{app,config,db,lib}/**/*"] + ["License.txt", "Rakefile", "README.textile"]
   s.test_files = Dir["spec/**/*"]
 
   s.add_dependency "spree", "~> 1.2.0"
