@@ -38,7 +38,7 @@
     <%= hidden_field_tag 'shipping_address1', address.address1 %>
     <%= hidden_field_tag 'shipping_address2', "N/A" %>
     <%= hidden_field_tag 'shipping_city', address.city %>
-    <%= hidden_field_tag 'shipping_state', address.state.abbr %>
+    <%= hidden_field_tag 'shipping_state', address.state.name %>
     <%= hidden_field_tag 'shipping_country', address.country.name %>
     <%= hidden_field_tag 'shipping_zipcode', address.zipcode %>
     <%= hidden_field_tag 'shipping_phone', address.phone %>
