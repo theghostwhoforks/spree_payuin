@@ -7,8 +7,8 @@ require "spree/payuin/version"
 Gem::Specification.new do |s|
   s.name        = "spree_payuin"
   s.version     = Spree::Payuin::VERSION
-  s.authors     = ["Varun Arbhatti", "Pavan Sudarshan"]
-  s.email       = ["flawed.flint@gmail.com"]
+  s.authors     = ["Varun Arbatti", "Pavan Sudarshan"]
+  s.email       = ["varun.arbatti@thoughtworks.com"]
   s.summary     = "Payuin Gateway implementation for spree"
 
   s.files = Dir["{app,config,db,lib}/**/*"] + ["MIT-LICENSE", "Rakefile", "README.rdoc"]
