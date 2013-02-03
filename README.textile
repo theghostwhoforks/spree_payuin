@@ -29,6 +29,12 @@ In the payment phase:
 * After two factor authentication, the payment gateway issues a redirect to the right (success, failure or cancel) URL with the necessary data. The browser then redirects to 
 this url and the server would know about the payment
 
+h3. TODO
+
+* Raise and handle exceptions when handling callback fails.
+* Increase logging in code.
+* Timely Reconcilliation - WIP
+
 h3. Limitations
 
 * Payuin should be the only payment method. Cannot have any other gateway configured
