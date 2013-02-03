@@ -33,17 +33,16 @@ Spree::CheckoutController.class_eval do
 
   def status_callback
     callback_method = "#{params[:status]}_callback".gsub(/\s/,'_')
-    verify_response_status callback_method
+    unless verify_response_status(callback_method)
+      @order.payment.source.update_attributes(:status => 'failure')
+      flash[:error] = "#{t(:payment_processing_failed)}. Unknown status response from the gateway"
+      redirect_to spree.checkout_state_path(@order) and return
+    end
     self.send(callback_method)
   end
 
   def verify_response_status callback_method
-    valid = ['success_callback', 'failure_callback', 'cancel_callback'].include? callback_method
-    unless valid
-      @order.payment.source.update_attributes(:status => 'failure')
-      flash[:error] = "#{t(:payment_processing_failed)}. Unknown status response from the gateway"
-      redirect_to spree.checkout_state_path(@order)
-    end
+    ['success_callback', 'failure_callback', 'cancel_callback', 'in_progress_callback'].include? callback_method
   end
 
   def verify_checksum params
